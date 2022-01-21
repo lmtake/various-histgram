@@ -1,0 +1,84 @@
+set.seed(1);x1 <- rnorm(10000,0.5,0.3);head(x1)
+set.seed(2);x2 <- rnorm(10000,1.0,0.3);head(x2)
+
+#同じ乱数を生成するためset.seed()指定
+#rnormで10000個サンプル生成
+
+## 単純なヒストグラム
+
+par(mfrow=c(1,2)) 
+hist(x1)
+hist(x2)
+
+## ggplot用データ形式変換
+
+二つをリスト化してggplotで一つのグラフにできるようにスタックする
+List <- list(x1=x1,x2=x2);head(List[[1]]);head(List[[2]])
+
+Df <- stack(List);head(Df)
+
+names(Df) <- c("result","Factor") #全て指定して名称変更
+#names(Df)[1] <- "result"　個別に変更の場合はこの記述
+#names(Df)[2] <- "Factor"
+head(Df)
+
+
+## 単純なヒストグラム
+hist(Df$result)
+
+## ggplot hist積み重ね
+library(ggplot2)
+ggplot(Df)+
+  geom_histogram((aes(x=result,fill=Factor)))
+
+
+## ggplot hist/重ねて描く、透明化、幅指定
+
+A <- ggplot(Df)
+B <- A+  geom_histogram((aes(x=result,fill=Factor)),
+                        position="identity", #重ね書き指定
+                        alpha=0.5, #透明化
+                        binwidth = 0.1) #幅指定
+B
+
+
+
+
+## 軸と軸ラベルのフォントサイズ変更
+C <- B+theme(axis.text = element_text(size=14), #軸
+             axis.title = element_text(size=14))#軸ラベル
+C
+
+
+## 95%上限の部分を追加
+x1_95 <- round(qnorm(0.95,0.5,0.3),2);x1_95
+x2_95<- round(qnorm(0.95,1,0.3),2);x2_95
+
+D <- C + geom_vline(xintercept=x1_95,color="red")+
+  annotate("text", x=0.7, y=100, label="x1 95%上限",
+           family="serif",fontface="italic",colour="red",size=3)+
+  geom_vline(xintercept = x2_95)+
+  annotate("text", x=1.8, y=200, label="x2 95%上限",
+           family="serif",fontface="italic",colour="black",size=3)
+#yに線引くときはgeom_hline(yintercept=1000)
+D
+
+
+
+## 密度曲線、コメントも追加
+E <- A+  geom_histogram((aes(x=result,y=..density..,fill=Factor)),
+                        position="identity", #重ね書き指定
+                        alpha=0.5, #透明化
+                        binwidth = 0.1) +#幅指定
+  geom_density(aes(x=result,fill=Factor),alpha=0.2)+
+  geom_vline(xintercept=x1_95,color="red")+
+  annotate("text", x=0.7, y=0.1, label="x1 95%上限",
+           family="serif",fontface="italic",colour="red",size=3)+
+  annotate("text", x=0.7, y=0.05, label=x1_95, #数値記載
+           family="serif",fontface="italic",colour="red",size=3)+
+  geom_vline(xintercept = x2_95)+
+  annotate("text", x=1.8, y=0.2, label="x2 95%上限",
+           family="serif",fontface="italic",colour="black",size=3)+
+  annotate("text", x=1.8, y=0.15, label=x2_95, #数値記載
+           family="serif",fontface="italic",colour="black",size=3)
+E
