@@ -28,7 +28,7 @@
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)) </span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x1)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(x2)</span></code></pre></div>
-<p><img src="https://github.com/lmtake/various-histgram/blob/main/hist%20base-1.png" /><!-- --></p>
+<p><img src="https://github.com/lmtake/various-histgram/blob/main/hist_base-1.png" /><!-- --></p>
 <h2 id="ggplot用データ形式変換">ggplot用データ形式変換</h2>
 <p>二つをリスト化してggplotで一つのグラフにできるようにスタックする</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>List <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">x1=</span>x1,<span class="at">x2=</span>x2);<span class="fu">head</span>(List[[<span class="dv">1</span>]]);<span class="fu">head</span>(List[[<span class="dv">2</span>]])</span></code></pre></div>
